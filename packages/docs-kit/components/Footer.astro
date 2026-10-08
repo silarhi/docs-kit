@@ -1,0 +1,63 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro'
+import { packages, siteUrl } from '../packages.js'
+
+// The current site is found by its subdomain, so the footer never links to itself
+const current = Astro.site?.hostname.split('.')[0]
+const others = packages.filter((pkg) => pkg.published && pkg.slug !== current)
+---
+
+<Default><slot /></Default>
+
+<div class="silarhi-footer">
+    {
+        others.length > 0 && (
+            <nav aria-label="SILARHI packages">
+                <p class="title">More from SILARHI</p>
+                <ul>
+                    {others.map((pkg) => (
+                        <li>
+                            <a href={siteUrl(pkg.slug)} title={pkg.description}>
+                                {pkg.name}
+                            </a>
+                        </li>
+                    ))}
+                    <li>
+                        <a href={siteUrl('docs')}>All packages</a>
+                    </li>
+                </ul>
+            </nav>
+        )
+    }
+    <p class="credit">
+        Made by <a href="https://silarhi.fr">SILARHI</a>, released under the MIT license.
+    </p>
+</div>
+
+<style>
+    .silarhi-footer {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--sl-color-hairline);
+        font-size: var(--sl-text-sm);
+        color: var(--sl-color-gray-3);
+    }
+    .title {
+        font-weight: 600;
+        color: var(--sl-color-white);
+    }
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1.25rem;
+        padding: 0;
+        margin: 0.5rem 0 1rem;
+        list-style: none;
+    }
+    a {
+        color: var(--sl-color-gray-2);
+    }
+    a:hover {
+        color: var(--sl-color-accent-high);
+    }
+</style>

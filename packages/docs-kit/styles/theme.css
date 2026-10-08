@@ -1,0 +1,40 @@
+/* SILARHI branding for Starlight, colors from silarhi.fr (src/app/globals.css) */
+@import '@fontsource-variable/montserrat';
+
+/* Dark mode (Starlight default) */
+:root {
+    --sl-color-accent-low: #172554;
+    --sl-color-accent: #3b82f6;
+    --sl-color-accent-high: #bfdbfe;
+    --sl-color-brand-secondary: #f7d325;
+
+    --sl-font-heading: 'Montserrat Variable', var(--sl-font-system);
+}
+
+/* Light mode */
+:root[data-theme='light'] {
+    --sl-color-accent-low: #dbeafe;
+    --sl-color-accent: #2556cf;
+    --sl-color-accent-high: #1e3a8a;
+    --sl-color-brand-secondary: #d7be44;
+}
+
+.site-title,
+.sl-markdown-content :is(h1, h2, h3),
+h1#_top,
+.hero h1 {
+    font-family: var(--sl-font-heading);
+    letter-spacing: -0.01em;
+}
+
+.site-title {
+    font-weight: 700;
+}
+
+/* Hero of landing pages: brand gradient on the title, as on silarhi.fr */
+.hero h1 {
+    background: linear-gradient(90deg, var(--sl-color-accent) 0%, #22d3ee 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}

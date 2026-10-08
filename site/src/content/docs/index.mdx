@@ -1,0 +1,27 @@
+---
+title: SILARHI Open Source
+description: Documentation of the open-source PHP libraries and Symfony bundles maintained by SILARHI.
+template: splash
+hero:
+    tagline: PHP libraries and Symfony bundles built and maintained by SILARHI.
+    actions:
+        - text: GitHub
+          link: https://github.com/silarhi
+          icon: github
+          variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components'
+import { packages, siteUrl } from '@silarhi/docs-kit/packages'
+
+## Packages
+
+<CardGrid>
+    {packages.map((pkg) =>
+        pkg.published ? (
+            <LinkCard title={pkg.name} description={pkg.description} href={siteUrl(pkg.slug)} />
+        ) : (
+            <LinkCard title={pkg.name} description={pkg.description} href={`https://github.com/silarhi/${pkg.slug}`} />
+        )
+    )}
+</CardGrid>

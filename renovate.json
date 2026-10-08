@@ -1,0 +1,23 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:recommended"],
+    "platformAutomerge": true,
+    "automergeType": "pr",
+    "minimumReleaseAge": "3 days",
+    "packageRules": [
+        {
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "automerge": true
+        },
+        {
+            "matchUpdateTypes": ["major"],
+            "automerge": false
+        },
+        {
+            "description": "Starlight is 0.x: a minor can break, review it with the theme",
+            "matchPackageNames": ["@astrojs/starlight", "starlight-llms-txt"],
+            "matchUpdateTypes": ["minor"],
+            "automerge": false
+        }
+    ]
+}

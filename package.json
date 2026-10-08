@@ -1,0 +1,17 @@
+{
+    "name": "silarhi-docs-kit",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "site"
+    ],
+    "scripts": {
+        "dev": "yarn workspace site dev",
+        "build": "yarn workspace site build",
+        "lint": "biome check --write .",
+        "lint:ci": "biome ci ."
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^2.5.15"
+    }
+}

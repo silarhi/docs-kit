@@ -1,0 +1,22 @@
+name: 'Documentation'
+
+# The hub (https://docs.silarhi.dev) dogfoods the theme: any change rebuilds it
+on:
+    pull_request:
+    push:
+        branches: ['main']
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    docs:
+        name: Docs
+        permissions:
+            contents: read
+            pages: write
+            id-token: write
+        uses: ./.github/workflows/docs-site.yml
+        with:
+            path: site
