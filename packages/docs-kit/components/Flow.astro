@@ -1,0 +1,157 @@
+---
+/**
+ * A diagram of steps joined by arrows: left to right on wide screens, top to bottom on narrow ones.
+ *
+ *     import Flow from '@silarhi/docs-kit/components/Flow.astro'
+ *     <Flow
+ *         caption="A cache hit never reaches PHP"
+ *         steps={[
+ *             { title: 'Browser' },
+ *             { title: 'CDN', detail: 'hit: answers', accent: true },
+ *             { title: 'Bucket', detail: 'S3, R2…', arrow: '403 / 404' },
+ *         ]}
+ *     />
+ *
+ * `arrow` labels the arrow leading to a step, `accent` highlights it, `muted` dims it (a path not taken).
+ * More than four steps stack vertically on every screen, unless `vertical` says otherwise.
+ */
+
+interface Step {
+    title: string
+    detail?: string
+    /** Label of the arrow leading to this step. */
+    arrow?: string
+    accent?: boolean
+    muted?: boolean
+}
+
+interface Props {
+    steps: Step[]
+    caption?: string
+    vertical?: boolean
+}
+
+const { steps, caption, vertical = steps.length > 4 } = Astro.props
+---
+
+<figure class:list={['sl-flow not-content', { vertical }]}>
+    <ol>
+        {
+            steps.map((step, index) => (
+                <>
+                    {index > 0 && (
+                        <li class="arrow" aria-hidden="true">
+                            {step.arrow && <span>{step.arrow}</span>}
+                        </li>
+                    )}
+                    <li class:list={['step', { accent: step.accent, muted: step.muted }]}>
+                        <strong>{step.title}</strong>
+                        {step.detail && <small>{step.detail}</small>}
+                    </li>
+                </>
+            ))
+        }
+    </ol>
+    {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+    .sl-flow {
+        margin-block: 1.5rem;
+    }
+    ol {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .step {
+        flex: 1 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.75rem 0.9rem;
+        border: 1px solid var(--sl-color-gray-5);
+        border-radius: 0.6rem;
+        background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+        text-align: center;
+    }
+    .step strong {
+        font-size: var(--sl-text-sm);
+        color: var(--sl-color-white);
+    }
+    .step small {
+        overflow-wrap: anywhere;
+        font-size: var(--sl-text-xs);
+        color: var(--sl-color-gray-3);
+        line-height: 1.35;
+    }
+    .step.accent {
+        border-color: var(--sl-color-accent);
+        background: var(--sl-color-accent-low);
+    }
+    .step.accent strong {
+        color: var(--sl-color-accent-high);
+    }
+    .step.muted {
+        opacity: 0.55;
+        border-style: dashed;
+    }
+    .arrow {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.5rem;
+        padding-inline: 0.25rem;
+        color: var(--sl-color-gray-3);
+        font-size: var(--sl-text-xs);
+        text-align: center;
+    }
+    .arrow::after {
+        content: '→';
+        font-size: 1.25rem;
+        line-height: 1;
+        color: var(--sl-color-accent);
+    }
+    .arrow span {
+        max-width: 6rem;
+    }
+    figcaption {
+        margin-top: 0.75rem;
+        font-size: var(--sl-text-sm);
+        color: var(--sl-color-gray-3);
+        text-align: center;
+    }
+    .vertical ol {
+        flex-direction: column;
+        max-width: 32rem;
+        margin-inline: auto;
+    }
+    .vertical .arrow {
+        flex-direction: row;
+        gap: 0.5rem;
+        min-height: 2rem;
+    }
+    .vertical .arrow::after {
+        content: '↓';
+    }
+    @media (max-width: 50rem) {
+        ol {
+            flex-direction: column;
+        }
+        .arrow {
+            flex-direction: row;
+            gap: 0.5rem;
+            min-height: 2rem;
+        }
+        .arrow::after {
+            content: '↓';
+        }
+    }
+</style>

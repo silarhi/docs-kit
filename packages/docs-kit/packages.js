@@ -17,7 +17,7 @@ export const packages = [
         name: 'Picasso Bundle',
         description: 'Responsive image component for Symfony, inspired by next/image.',
         composer: 'silarhi/picasso-bundle',
-        published: false,
+        published: true,
     },
     {
         slug: 'tabler-ux-components',

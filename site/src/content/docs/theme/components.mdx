@@ -1,0 +1,75 @@
+---
+title: Components
+description: Gallery and Flow, the visual components every SILARHI documentation can use.
+sidebar:
+    order: 4
+---
+
+import Flow from '@silarhi/docs-kit/components/Flow.astro'
+
+Starlight's own components ([Tabs, Cards, Steps, Asides…](https://starlight.astro.build/components/using-components/)) cover most pages. The kit adds two, for what text explains badly: what something **looks like**, and how something **flows**. Both follow the light and dark themes, and fit phones.
+
+## Flow
+
+A diagram of steps joined by arrows. Up to four steps run left to right, more stack vertically; on phones they always stack.
+
+<Flow
+    caption="A cache hit never reaches PHP."
+    steps={[
+        { title: 'Browser', detail: 'GET /image/…' },
+        { title: 'CDN', detail: 'edge cache', accent: true },
+        { title: 'Bucket', detail: 'S3, R2…', arrow: 'origin' },
+        { title: 'Symfony', detail: 'only on a miss', arrow: '404', muted: true },
+    ]}
+/>
+
+```mdx
+import Flow from '@silarhi/docs-kit/components/Flow.astro'
+
+<Flow
+    caption="A cache hit never reaches PHP."
+    steps={[
+        { title: 'Browser', detail: 'GET /image/…' },
+        { title: 'CDN', detail: 'edge cache', accent: true },
+        { title: 'Bucket', detail: 'S3, R2…', arrow: 'origin' },
+        { title: 'Symfony', detail: 'only on a miss', arrow: '404', muted: true },
+    ]}
+/>
+```
+
+| Step option | Effect                                             |
+| ----------- | -------------------------------------------------- |
+| `title`     | The step                                           |
+| `detail`    | A short line under it                              |
+| `arrow`     | Label of the arrow leading to the step             |
+| `accent`    | Highlights the step: the one the reader should see |
+| `muted`     | Dims it: a path not taken                          |
+
+`vertical` forces either layout.
+
+## Gallery
+
+Images side by side, each with a label and a note: renders to compare, before and after, variants. With `frame`, a checkerboard shows the empty areas of each image (padding, transparency).
+
+```mdx
+import Gallery from '@silarhi/docs-kit/components/Gallery.astro'
+import contain from '../../assets/fit-contain.jpg'
+import crop from '../../assets/fit-crop.jpg'
+
+<Gallery
+    frame
+    caption="The same 480 × 480 box."
+    items={[
+        { src: contain, alt: 'The whole photo, letterboxed', label: 'contain', note: '480 × 322' },
+        { src: crop, alt: 'The box filled, sides cropped', label: 'crop', note: '480 × 480' },
+    ]}
+/>
+```
+
+`minWidth` (default `10rem`) is the narrowest a column gets before the grid wraps.
+
+See it in [Picasso's fit modes](https://picasso-bundle.silarhi.dev/guides/fit-modes/).
+
+## Real output, not illustrations
+
+Show what the package really produces. Picasso's `docs/scripts/` render its examples with the bundle itself: the images of the gallery are real Glide renders, and the HTML of its pages is the HTML the component outputs. A change of behaviour then shows in the documentation the next time the script runs, instead of the page silently going stale.
