@@ -36,7 +36,7 @@ export const packages = [
         description:
             'Framework-agnostic Hotwire Turbo helpers: a lifecycle orchestrator for the browser and frame-redirect following for Symfony.',
         composer: 'silarhi/turbo-bundle',
-        published: false,
+        published: true,
         umami: 'cb89a9c9-04b5-48a3-801c-0b22fd3c2347',
     },
     {
@@ -44,7 +44,7 @@ export const packages = [
         name: 'Cursor Pagination',
         description: 'Doctrine ORM cursor-based pagination for faster batch operations.',
         composer: 'silarhi/cursor-pagination',
-        published: false,
+        published: true,
         umami: '54f10d23-99a1-4d5d-a5e0-0eb43bac4c83',
     },
     {
@@ -52,7 +52,7 @@ export const packages = [
         name: 'CFONB Parser',
         description: 'A zero-dependency PHP parser for CFONB bank transactions.',
         composer: 'silarhi/cfonb-parser',
-        published: false,
+        published: true,
         umami: 'f7334f53-8959-4809-b42b-943ece09dd1f',
     },
     {
@@ -60,7 +60,7 @@ export const packages = [
         name: 'CAF Parser',
         description: 'A parser for CAF LA44ZZ files.',
         composer: 'silarhi/caf-parser',
-        published: false,
+        published: true,
         umami: '6780c193-9404-48f3-b6e1-500141ba50e5',
     },
     {
@@ -68,7 +68,7 @@ export const packages = [
         name: 'QIF Library',
         description: 'Parse and write QIF (Quicken Interchange Format) files.',
         composer: 'silarhi/qif-library',
-        published: false,
+        published: true,
         umami: 'cb638e6e-dd91-4571-9ee4-da98061e226e',
     },
 ]
