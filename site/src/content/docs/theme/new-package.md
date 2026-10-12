@@ -16,7 +16,14 @@ sidebar:
    otherwise GitHub cannot issue the certificate.
 6. **Hub** — set `published: true` for the package in `packages/docs-kit/packages.js`, release the theme:
    the hub and the footer of every site link to it.
-7. **README** — link the documentation site and add it as the repository _Website_ (`gh repo edit --homepage`).
+7. **README** — trim it to a landing page: the pitch, features, requirements, installation, a quick start, and a
+   _Documentation_ list linking every page. Before cutting, check that every section, code block and inline-code
+   token of the old README exists on the site. Move _Testing & Quality_ and _Contributing_ to a `CONTRIBUTING.md`
+   (`/CONTRIBUTING.md export-ignore`), and point the links to old README anchors (`README.md#…` in `CHANGELOG.md`,
+   `UPGRADE*.md`, docblocks, exception messages) to the documentation pages.
+8. **`CLAUDE.md`** — if it says to document the API in the README, make it `docs/`: otherwise the README grows back.
+9. **Website** — once the site is live, set it as the repository _Website_ (`gh repo edit --homepage`), and as the
+   `homepage` of an npm package the repository publishes.
 
 :::caution[Domain takeover]
 `silarhi.dev` must be a [verified domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages)

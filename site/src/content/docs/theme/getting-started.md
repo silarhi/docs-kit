@@ -53,6 +53,8 @@ export default defineSilarhiDocs({
 `defineSilarhiDocs()` sets the `site` URL, adds Starlight with the SILARHI plugin and `starlight-llms-txt`.
 Dark mode is Starlight's: dark by default, with a light / dark / auto picker in the header.
 Any Starlight option can be passed through `starlight: {}`, any Astro one through `astro: {}`: they win over the preset.
+"Edit page" links point to the `main` branch of `github.com/silarhi/<slug>`: set `branch` for a repository whose
+default branch is another one (`branch: '6.x'`), and `repo` for one outside the `silarhi` organization.
 
 ### Starlight plugin only
 

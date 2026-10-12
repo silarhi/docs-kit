@@ -35,3 +35,13 @@ A snapshot is plain Markdown: fix a typo of an older version by editing its file
 
 Repositories with one branch per major (`cfonb-parser`: `2.x` … `6.x`) document every version from the default branch:
 the `docs.yml` workflow lists that branch in `push.branches`, and the other branches never deploy.
+Set `branch` in `astro.config.mjs` too, so the "Edit page" links open that branch:
+
+```js
+export default defineSilarhiDocs({
+    slug: 'cfonb-parser',
+    title: 'CFONB Parser',
+    branch: '6.x',
+    // ...
+})
+```

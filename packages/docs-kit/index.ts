@@ -34,6 +34,8 @@ const favicon = (): AstroIntegration => ({
 export interface SilarhiThemeOptions {
     /** GitHub `owner/name`, used for the social link and "Edit page". */
     repo?: string
+    /** Branch the "Edit page" links point to: the default branch of the repository, e.g. `6.x`. */
+    branch?: string
 }
 
 /**
@@ -41,7 +43,7 @@ export interface SilarhiThemeOptions {
  *
  * Every option set by the site wins over the preset.
  */
-export function silarhiTheme({ repo }: SilarhiThemeOptions = {}): StarlightPlugin {
+export function silarhiTheme({ repo, branch = 'main' }: SilarhiThemeOptions = {}): StarlightPlugin {
     return {
         name: '@silarhi/docs-kit',
         hooks: {
@@ -60,7 +62,7 @@ export function silarhiTheme({ repo }: SilarhiThemeOptions = {}): StarlightPlugi
                         config.social ??
                         (repo ? [{ icon: 'github', label: 'GitHub', href: `https://github.com/${repo}` }] : []),
                     editLink:
-                        config.editLink ?? (repo ? { baseUrl: `https://github.com/${repo}/edit/main/docs/` } : {}),
+                        config.editLink ?? (repo ? { baseUrl: `https://github.com/${repo}/edit/${branch}/docs/` } : {}),
                     lastUpdated: config.lastUpdated ?? true,
                     credits: config.credits ?? false,
                 })
@@ -95,6 +97,7 @@ export function defineSilarhiDocs({
     title,
     description,
     repo = `silarhi/${slug}`,
+    branch,
     sidebar,
     versions = [],
     currentVersion,
@@ -111,7 +114,7 @@ export function defineSilarhiDocs({
                 sidebar,
                 ...extra,
                 plugins: [
-                    silarhiTheme({ repo }),
+                    silarhiTheme({ repo, branch }),
                     // starlight-versions refuses an empty list: a single-version site has no picker
                     ...(versions.length > 0
                         ? [

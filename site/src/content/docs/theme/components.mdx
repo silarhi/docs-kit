@@ -73,3 +73,22 @@ See it in [Picasso's fit modes](https://picasso-bundle.silarhi.dev/guides/fit-mo
 ## Real output, not illustrations
 
 Show what the package really produces. Picasso's `docs/scripts/` render its examples with the bundle itself: the images of the gallery are real Glide renders, and the HTML of its pages is the HTML the component outputs. A change of behaviour then shows in the documentation the next time the script runs, instead of the page silently going stale.
+
+Make the CI run it too. The `render-examples.php` scripts of tabler-ux-components, caf-parser, cfonb-parser and
+qif-library take a `--check` flag that renders in memory and fails when a committed output is missing, outdated or
+left over from a deleted example; `.laminas-ci.json` runs it as an additional check:
+
+```json
+{
+    "name": "Documentation examples",
+    "job": {
+        "php": "8.5",
+        "dependencies": "latest",
+        "command": "php docs/scripts/render-examples.php --check"
+    }
+}
+```
+
+Pin `php` to a released version rather than `@latest`, which can resolve to a pre-release without all the extensions.
+A script booting a Symfony kernel without debug must start from an empty cache: Twig never checks its compiled
+templates otherwise, and renders the old ones.
