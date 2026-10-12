@@ -24,6 +24,14 @@ export const packages = [
         name: 'Tabler UX Components',
         description: 'Tabler-flavored Twig UX components for Symfony, following the shadcn composition pattern.',
         composer: 'silarhi/tabler-ux-components',
+        published: true,
+    },
+    {
+        slug: 'turbo-bundle',
+        name: 'Turbo Bundle',
+        description:
+            'Framework-agnostic Hotwire Turbo helpers: a lifecycle orchestrator for the browser and frame-redirect following for Symfony.',
+        composer: 'silarhi/turbo-bundle',
         published: false,
     },
     {
