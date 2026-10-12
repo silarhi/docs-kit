@@ -1,6 +1,6 @@
 {
     "name": "@silarhi/docs-kit",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "Shared Starlight preset for the documentation of SILARHI open-source packages",
     "license": "MIT",
     "type": "module",
@@ -22,6 +22,7 @@
         "index.ts",
         "content.ts",
         "packages.js",
+        "scripts",
         "styles",
         "components",
         "assets"
