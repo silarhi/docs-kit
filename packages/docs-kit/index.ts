@@ -12,6 +12,7 @@ import { packages, siteUrl } from './packages.js'
 const FAVICON = '/silarhi-favicon.png'
 const UMAMI_SCRIPT = 'https://analytics.silarhi.fr/script.js'
 const faviconFile = new URL('./assets/favicon.png', import.meta.url)
+const trackSearchFile = new URL('./scripts/track-search.js', import.meta.url)
 
 /**
  * Serves the SILARHI favicon at a public path: Starlight's `favicon` option only accepts files of `public/`,
@@ -50,7 +51,7 @@ export function silarhiTheme({ repo, branch = 'main', umami }: SilarhiThemeOptio
     return {
         name: '@silarhi/docs-kit',
         hooks: {
-            'config:setup'({ config, astroConfig, updateConfig, addIntegration }) {
+            async 'config:setup'({ config, astroConfig, updateConfig, addIntegration }) {
                 addIntegration(favicon())
 
                 // `data-domains` keeps `astro dev` and `astro preview` out of the stats: the tracker only runs on the site host
@@ -65,6 +66,7 @@ export function silarhiTheme({ repo, branch = 'main', umami }: SilarhiThemeOptio
                                   ...(astroConfig.site ? { 'data-domains': new URL(astroConfig.site).hostname } : {}),
                               },
                           },
+                          { tag: 'script' as const, content: await readFile(trackSearchFile, 'utf8') },
                       ]
                     : []
 

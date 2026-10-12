@@ -60,6 +60,12 @@ Visits are tracked by [Umami](https://analytics.silarhi.fr), one website per doc
 the `umami` field of the package in `packages.js`, or the `umami` option. The tracker only runs on the
 `<slug>.silarhi.dev` host, so `astro dev` and `astro preview` never count.
 
+The search is tracked too, as two Umami events with their properties under _Events_:
+
+- `search` — `query` and `results`, once the reader stops typing (3 characters minimum). The queries with 0
+  results are the pages the documentation is missing.
+- `search-click` — `query` and the `page` opened from the results.
+
 ### Starlight plugin only
 
 A site that keeps its own Astro config can use the plugin alone:
