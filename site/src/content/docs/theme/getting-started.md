@@ -56,6 +56,10 @@ Any Starlight option can be passed through `starlight: {}`, any Astro one throug
 "Edit page" links point to the `main` branch of `github.com/silarhi/<slug>`: set `branch` for a repository whose
 default branch is another one (`branch: '6.x'`), and `repo` for one outside the `silarhi` organization.
 
+Visits are tracked by [Umami](https://analytics.silarhi.fr), one website per documentation site: its ID comes from
+the `umami` field of the package in `packages.js`, or the `umami` option. The tracker only runs on the
+`<slug>.silarhi.dev` host, so `astro dev` and `astro preview` never count.
+
 ### Starlight plugin only
 
 A site that keeps its own Astro config can use the plugin alone:

@@ -16,6 +16,9 @@ sidebar:
    otherwise GitHub cannot issue the certificate.
 6. **Hub** — set `published: true` for the package in `packages/docs-kit/packages.js`, release the theme:
    the hub and the footer of every site link to it.
+   In the same change, add a website named and with domain `<package>.silarhi.dev` to the SILARHI team on
+   [analytics.silarhi.fr](https://analytics.silarhi.fr), and set its ID as `umami` next to `published`: the site
+   tracks its visits once it upgrades to that theme release.
 7. **README** — trim it to a landing page: the pitch, features, requirements, installation, a quick start, and a
    _Documentation_ list linking every page. Before cutting, check that every section, code block and inline-code
    token of the old README exists on the site. Move _Testing & Quality_ and _Contributing_ to a `CONTRIBUTING.md`

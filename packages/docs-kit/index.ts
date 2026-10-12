@@ -7,9 +7,10 @@ import type { AstroIntegration, AstroUserConfig } from 'astro'
 import { defineConfig } from 'astro/config'
 import starlightLlmsTxt from 'starlight-llms-txt'
 import starlightVersions from 'starlight-versions'
-import { siteUrl } from './packages.js'
+import { packages, siteUrl } from './packages.js'
 
 const FAVICON = '/silarhi-favicon.png'
+const UMAMI_SCRIPT = 'https://analytics.silarhi.fr/script.js'
 const faviconFile = new URL('./assets/favicon.png', import.meta.url)
 
 /**
@@ -36,6 +37,8 @@ export interface SilarhiThemeOptions {
     repo?: string
     /** Branch the "Edit page" links point to: the default branch of the repository, e.g. `6.x`. */
     branch?: string
+    /** ID of the site's own website on https://analytics.silarhi.fr: no tracking without it. */
+    umami?: string
 }
 
 /**
@@ -43,14 +46,30 @@ export interface SilarhiThemeOptions {
  *
  * Every option set by the site wins over the preset.
  */
-export function silarhiTheme({ repo, branch = 'main' }: SilarhiThemeOptions = {}): StarlightPlugin {
+export function silarhiTheme({ repo, branch = 'main', umami }: SilarhiThemeOptions = {}): StarlightPlugin {
     return {
         name: '@silarhi/docs-kit',
         hooks: {
-            'config:setup'({ config, updateConfig, addIntegration }) {
+            'config:setup'({ config, astroConfig, updateConfig, addIntegration }) {
                 addIntegration(favicon())
 
+                // `data-domains` keeps `astro dev` and `astro preview` out of the stats: the tracker only runs on the site host
+                const tracking = umami
+                    ? [
+                          {
+                              tag: 'script' as const,
+                              attrs: {
+                                  defer: true,
+                                  src: UMAMI_SCRIPT,
+                                  'data-website-id': umami,
+                                  ...(astroConfig.site ? { 'data-domains': new URL(astroConfig.site).hostname } : {}),
+                              },
+                          },
+                      ]
+                    : []
+
                 updateConfig({
+                    head: [...(config.head ?? []), ...tracking],
                     logo: config.logo ?? { src: '@silarhi/docs-kit/assets/logo.png' },
                     favicon: config.favicon ?? FAVICON,
                     customCss: ['@silarhi/docs-kit/styles/theme.css', ...(config.customCss ?? [])],
@@ -91,13 +110,18 @@ export interface SilarhiDocsOptions extends SilarhiThemeOptions {
     astro?: AstroUserConfig
 }
 
-/** Full Astro config of a SILARHI package documentation, published at https://<slug>.silarhi.dev. */
+/**
+ * Full Astro config of a SILARHI package documentation, published at https://<slug>.silarhi.dev.
+ *
+ * The Umami website comes from the package registry (`packages.js`) unless `umami` is set.
+ */
 export function defineSilarhiDocs({
     slug,
     title,
     description,
     repo = `silarhi/${slug}`,
     branch,
+    umami = packages.find((pkg) => pkg.slug === slug)?.umami,
     sidebar,
     versions = [],
     currentVersion,
@@ -114,7 +138,7 @@ export function defineSilarhiDocs({
                 sidebar,
                 ...extra,
                 plugins: [
-                    silarhiTheme({ repo, branch }),
+                    silarhiTheme({ repo, branch, umami }),
                     // starlight-versions refuses an empty list: a single-version site has no picker
                     ...(versions.length > 0
                         ? [

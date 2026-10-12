@@ -3,6 +3,7 @@
  *
  * Feeds the hub (docs.silarhi.dev) and the "Other packages" footer of every site.
  * Each site lives at https://<slug>.silarhi.dev and is built from the `docs/` folder of github.com/silarhi/<slug>.
+ * `umami` is the ID of its own website on https://analytics.silarhi.fr (one per site, SILARHI team).
  */
 export const packages = [
     {
@@ -11,6 +12,7 @@ export const packages = [
         description: 'Build, dump and serve an llms.txt file from your Symfony application.',
         composer: 'silarhi/llms-txt-bundle',
         published: true,
+        umami: '063e932e-cd3a-4a7b-92c3-e333af5d6a6e',
     },
     {
         slug: 'picasso-bundle',
@@ -18,6 +20,7 @@ export const packages = [
         description: 'Responsive image component for Symfony, inspired by next/image.',
         composer: 'silarhi/picasso-bundle',
         published: true,
+        umami: '3ada68cf-c4f7-42a7-8d79-251cb8e89a4b',
     },
     {
         slug: 'tabler-ux-components',
@@ -25,6 +28,7 @@ export const packages = [
         description: 'Tabler-flavored Twig UX components for Symfony, following the shadcn composition pattern.',
         composer: 'silarhi/tabler-ux-components',
         published: true,
+        umami: 'a0c2ddc5-2080-46cc-909b-bf4b30498b3d',
     },
     {
         slug: 'turbo-bundle',
