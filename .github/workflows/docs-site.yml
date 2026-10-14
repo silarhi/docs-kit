@@ -49,43 +49,40 @@ jobs:
                   # "Last updated" dates come from the git history
                   fetch-depth: 0
 
-            # Callers are moving from Yarn classic to pnpm one by one: use the package manager of the lockfile,
-            # in the site folder or, for a workspace member (the hub), at the repository root.
-            # TODO: drop the yarn branch once every caller has a pnpm-lock.yaml.
-            - name: Detect package manager
-              id: pm
+            # The lockfile sits in the site folder or, for a workspace member (the hub), at the repository root
+            - name: Locate lockfile
+              id: lockfile
               working-directory: .
               env:
                   SITE_PATH: ${{ inputs.path }}
               run: |
                   for dir in "$SITE_PATH" .; do
-                      if [ -f "$dir/pnpm-lock.yaml" ]; then pm=pnpm; elif [ -f "$dir/yarn.lock" ]; then pm=yarn; else continue; fi
-                      echo "pm=$pm" >> "$GITHUB_OUTPUT"
-                      echo "dir=$dir" >> "$GITHUB_OUTPUT"
-                      exit 0
+                      if [ -f "$dir/pnpm-lock.yaml" ]; then
+                          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+                          exit 0
+                      fi
                   done
-                  echo "::error::No pnpm-lock.yaml or yarn.lock in $SITE_PATH or at the repository root"
+                  echo "::error::No pnpm-lock.yaml in $SITE_PATH or at the repository root"
                   exit 1
 
             - name: Setup pnpm
-              if: steps.pm.outputs.pm == 'pnpm'
               uses: pnpm/action-setup@v6
               with:
                   # The version comes from "packageManager", next to the lockfile rather than at the repository root
-                  package_json_file: ${{ steps.pm.outputs.dir }}/package.json
+                  package_json_file: ${{ steps.lockfile.outputs.dir }}/package.json
 
             - name: Setup Node
               uses: actions/setup-node@v7
               with:
                   node-version: lts/*
-                  cache: ${{ steps.pm.outputs.pm }}
-                  cache-dependency-path: ${{ steps.pm.outputs.dir }}/${{ steps.pm.outputs.pm == 'pnpm' && 'pnpm-lock.yaml' || 'yarn.lock' }}
+                  cache: pnpm
+                  cache-dependency-path: ${{ steps.lockfile.outputs.dir }}/pnpm-lock.yaml
 
             - name: Install dependencies
-              run: ${{ steps.pm.outputs.pm }} install --frozen-lockfile
+              run: pnpm install --frozen-lockfile
 
             - name: Build
-              run: ${{ steps.pm.outputs.pm }} run build
+              run: pnpm run build
 
             - name: Upload site
               if: github.ref_name == github.event.repository.default_branch
