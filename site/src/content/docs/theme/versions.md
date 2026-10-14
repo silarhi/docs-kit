@@ -24,7 +24,7 @@ export default defineSilarhiDocs({
 })
 ```
 
-Then run `yarn dev` or `yarn build` once in `docs/`: the pages are copied to `src/content/docs/1.x/` and the sidebar
+Then run `pnpm dev` or `pnpm build` once in `docs/`: the pages are copied to `src/content/docs/1.x/` and the sidebar
 to `src/content/versions/1.x.json`. Commit both, then update the current pages for the new major.
 
 :::note

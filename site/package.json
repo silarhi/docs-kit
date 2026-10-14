@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@astrojs/starlight": "^0.42.5",
-        "@silarhi/docs-kit": "*",
+        "@silarhi/docs-kit": "workspace:*",
         "astro": "^7.3.8"
     }
 }
