@@ -13,13 +13,17 @@ reusable workflow [`docs-site.yml`](.github/workflows/docs-site.yml) of this rep
 ## Development
 
 ```bash
-yarn install
-yarn dev     # the hub, with the local theme
-yarn lint
+pnpm install
+pnpm dev     # the hub, with the local theme
+pnpm lint
 ```
 
-To try the theme on a package before releasing it: `yarn link` in `packages/docs-kit`,
-then `yarn link @silarhi/docs-kit` in the `docs/` folder of the package.
+A pnpm workspace (`pnpm-workspace.yaml`): the hub depends on the theme through `workspace:*`. The pnpm version is
+pinned by `packageManager` in `package.json`; a dependency that needs an install script must be listed under
+`allowBuilds` in `pnpm-workspace.yaml` (none does today).
+
+To try the theme on a package before releasing it: `pnpm link <path to>/docs-kit/packages/docs-kit`
+in the `docs/` folder of the package.
 
 ## Release
 

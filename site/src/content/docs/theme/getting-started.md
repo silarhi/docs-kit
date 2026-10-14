@@ -14,7 +14,8 @@ The look, the footer, the favicon and the `llms.txt` come from [`@silarhi/docs-k
 docs/
 ├── astro.config.mjs
 ├── package.json
-├── yarn.lock
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
 ├── tsconfig.json
 └── src/
     ├── content.config.ts
@@ -30,6 +31,15 @@ export { collections } from '@silarhi/docs-kit/content'
 
 The folder has its own `package.json`: the documentation tooling never mixes with the package one,
 and `/docs export-ignore` in `.gitattributes` keeps it out of the Composer archive.
+It is managed with [pnpm](https://pnpm.io): `"packageManager": "pnpm@<version>"` in `package.json` pins the version,
+and its own `pnpm-workspace.yaml` keeps pnpm from looking for a workspace higher up (and lists, under `allowBuilds`,
+the dependencies allowed to run install scripts).
+
+```bash
+cd docs
+pnpm add @silarhi/docs-kit @astrojs/starlight astro
+pnpm dev
+```
 
 ## Configuration
 

@@ -21,17 +21,22 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v7
 
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
             - name: Setup Node
               uses: actions/setup-node@v7
               with:
                   node-version: lts/*
-                  cache: yarn
+                  cache: pnpm
 
             - name: Install dependencies
-              run: yarn install --frozen-lockfile
+              run: pnpm install --frozen-lockfile
 
             - name: Biome
-              run: yarn lint:ci
+              run: pnpm lint:ci
 
+            # Same tool as release.yml, so this is the tarball that gets published
             - name: Package contents
-              run: npm pack --dry-run --workspace @silarhi/docs-kit
+              working-directory: packages/docs-kit
+              run: npm pack --dry-run

@@ -5,7 +5,7 @@ branding (logo, favicon, colors, Montserrat headings), footer linking the other 
 and an `llms.txt` through [starlight-llms-txt](https://github.com/delucis/starlight-llms-txt).
 
 ```bash
-yarn add @silarhi/docs-kit @astrojs/starlight astro
+pnpm add @silarhi/docs-kit @astrojs/starlight astro
 ```
 
 ```js
