@@ -40,6 +40,14 @@ export const packages = [
         umami: 'cb89a9c9-04b5-48a3-801c-0b22fd3c2347',
     },
     {
+        slug: 'ux-icons-js-bundle',
+        name: 'UX Icons JS Bundle',
+        description: 'Render Symfony UX Icons in JavaScript, React and Vue, with the same attributes as ux_icon().',
+        composer: 'silarhi/ux-icons-js-bundle',
+        published: true,
+        umami: 'a3a22a7e-ad74-4b8a-b4f7-c2e0939114d3',
+    },
+    {
         slug: 'cursor-pagination',
         name: 'Cursor Pagination',
         description: 'Doctrine ORM cursor-based pagination for faster batch operations.',
