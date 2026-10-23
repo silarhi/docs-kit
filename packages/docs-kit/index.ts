@@ -10,7 +10,9 @@ import starlightVersions from 'starlight-versions'
 import { packages, siteUrl } from './packages.js'
 
 const FAVICON = '/silarhi-favicon.png'
-const UMAMI_SCRIPT = 'https://analytics.silarhi.fr/script.js'
+// The tracker host of the silarhi.dev sites: it serves the script and its endpoint only (the dashboard stays on
+// analytics.silarhi.fr), and being a subdomain of the site, it is not blocked as a third-party analytics host
+const UMAMI_SCRIPT = 'https://analytics.silarhi.dev/script.js'
 const faviconFile = new URL('./assets/favicon.png', import.meta.url)
 const trackSearchFile = new URL('./scripts/track-search.js', import.meta.url)
 
