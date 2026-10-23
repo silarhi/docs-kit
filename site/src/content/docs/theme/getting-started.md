@@ -68,7 +68,8 @@ default branch is another one (`branch: '6.x'`), and `repo` for one outside the 
 
 Visits are tracked by [Umami](https://analytics.silarhi.fr), one website per documentation site: its ID comes from
 the `umami` field of the package in `packages.js`, or the `umami` option. The tracker only runs on the
-`<slug>.silarhi.dev` host, so `astro dev` and `astro preview` never count.
+`<slug>.silarhi.dev` host, so `astro dev` and `astro preview` never count. The script loads from
+`analytics.silarhi.dev`, which serves only the tracker and the endpoint it posts to.
 
 The search is tracked too, as two Umami events with their properties under _Events_:
 
