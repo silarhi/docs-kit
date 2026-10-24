@@ -31,6 +31,34 @@ h1#_top,
     font-weight: 700;
 }
 
+/* Starlight clips a title too long for a phone header mid-word: Montserrat is wider than the system font */
+.site-title span {
+    text-overflow: ellipsis;
+}
+
+/*
+ * Tables scroll sideways on narrow screens: a shadow on the clipped side tells the reader there is more.
+ * The `local` covers scroll with the content and hide the `scroll` shadows once an edge is reached.
+ * Not inside asides, whose background the covers would not match.
+ */
+.sl-markdown-content table:not(:where(.not-content *, .starlight-aside *)) {
+    --sl-table-shadow: color-mix(in srgb, var(--sl-color-gray-1) 25%, transparent);
+    background:
+        linear-gradient(to right, var(--sl-color-bg) 30%, transparent) left / 2.5rem 100% no-repeat local,
+        linear-gradient(to left, var(--sl-color-bg) 30%, transparent) right / 2.5rem 100% no-repeat local,
+        radial-gradient(farthest-side at 0 50%, var(--sl-table-shadow), transparent) left / 0.75rem 100% no-repeat
+        scroll,
+        radial-gradient(farthest-side at 100% 50%, var(--sl-table-shadow), transparent) right / 0.75rem 100% no-repeat
+        scroll;
+}
+
+/* The last column of a 3+ column table (props: name, type, default, description) keeps a readable width */
+@media (max-width: 50rem) {
+    .sl-markdown-content table:has(th:nth-child(3)) td:last-child:not(:where(.not-content *)) {
+        min-width: 14rem;
+    }
+}
+
 /* Hero of landing pages: brand gradient on the title, as on silarhi.fr */
 .hero h1 {
     background: linear-gradient(90deg, var(--sl-color-accent) 0%, #22d3ee 100%);
