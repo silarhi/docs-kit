@@ -66,6 +66,16 @@ Any Starlight option can be passed through `starlight: {}`, any Astro one throug
 "Edit page" links point to the `main` branch of `github.com/silarhi/<slug>`: set `branch` for a repository whose
 default branch is another one (`branch: '6.x'`), and `repo` for one outside the `silarhi` organization.
 
+On top of Starlight's tags, every page gets:
+
+- a social image at `/og/<page>.png` (1200×630, built with [astro-og-canvas](https://github.com/delucis/astro-og-canvas)):
+  the page title and description on the SILARHI colors, referenced by `og:image`;
+- JSON-LD: `WebSite` and `SoftwareSourceCode` on the home page, `TechArticle` and `BreadcrumbList` on the others,
+  all published by the SILARHI organization of silarhi.fr;
+- on the home page, the title `<name> – <headline>` (the `headline` of the package in `packages.js`) instead of the
+  name twice. A `head` title in the frontmatter still wins;
+- a `robots.txt` pointing to the sitemap, unless the site has one in `public/`.
+
 Visits are tracked by [Umami](https://analytics.silarhi.fr), one website per documentation site: its ID comes from
 the `umami` field of the package in `packages.js`, or the `umami` option. The tracker only runs on the
 `<slug>.silarhi.dev` host, so `astro dev` and `astro preview` never count. The script loads from

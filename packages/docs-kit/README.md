@@ -2,7 +2,8 @@
 
 Shared [Starlight](https://starlight.astro.build) preset for the documentation of the SILARHI open-source packages:
 branding (logo, favicon, colors, Montserrat headings), footer linking the other packages, "Edit page" links,
-and an `llms.txt` through [starlight-llms-txt](https://github.com/delucis/starlight-llms-txt).
+an `llms.txt` through [starlight-llms-txt](https://github.com/delucis/starlight-llms-txt), and the SEO tags Starlight
+leaves out: a social image per page, JSON-LD, a `robots.txt` and a home title built from the package headline.
 
 ```bash
 pnpm add @silarhi/docs-kit @astrojs/starlight astro

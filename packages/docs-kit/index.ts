@@ -1,6 +1,8 @@
 // Shipped as TypeScript on purpose: Vite never externalizes a .ts entry, so it bundles this preset and its
 // TypeScript-only dependencies (starlight-llms-txt) when loading astro.config.mjs, instead of handing them to Node
-import { copyFile, readFile } from 'node:fs/promises'
+import { access, copyFile, readFile, writeFile } from 'node:fs/promises'
+import { createRequire } from 'node:module'
+import { fileURLToPath } from 'node:url'
 import starlight from '@astrojs/starlight'
 import type { StarlightPlugin, StarlightUserConfig } from '@astrojs/starlight/types'
 import type { AstroIntegration, AstroUserConfig } from 'astro'
@@ -15,6 +17,10 @@ const FAVICON = '/silarhi-favicon.png'
 const UMAMI_SCRIPT = 'https://analytics.silarhi.dev/script.js'
 const faviconFile = new URL('./assets/favicon.png', import.meta.url)
 const trackSearchFile = new URL('./scripts/track-search.js', import.meta.url)
+const logoFile = new URL('./assets/logo.png', import.meta.url)
+const OG_MODULE = 'virtual:silarhi-docs-kit/og'
+// Resolved from this package: a site does not depend on it, so with pnpm it cannot find it from its own build
+const ogCanvas = createRequire(import.meta.url).resolve('astro-og-canvas')
 
 /**
  * Serves the SILARHI favicon at a public path: Starlight's `favicon` option only accepts files of `public/`,
@@ -35,6 +41,64 @@ const favicon = (): AstroIntegration => ({
     },
 })
 
+/**
+ * Serves a social image per page (`/og/<page>.png`) and writes a `robots.txt` pointing to the sitemap,
+ * unless the site ships its own in `public/`.
+ *
+ * The image route gets the logo path and the site title from a virtual module: once bundled, it can no longer
+ * find the logo from its own `import.meta.url`.
+ */
+const seo = (siteTitle: string): AstroIntegration => {
+    let site: string | undefined
+
+    return {
+        name: '@silarhi/docs-kit/seo',
+        hooks: {
+            'astro:config:setup': ({ injectRoute, updateConfig }) => {
+                const resolved = `\0${OG_MODULE}`
+                updateConfig({
+                    vite: {
+                        plugins: [
+                            {
+                                name: OG_MODULE,
+                                enforce: 'pre',
+                                resolveId: (id) => {
+                                    if (id === OG_MODULE) {
+                                        return resolved
+                                    }
+                                    // Kept out of the bundle: bundled, CanvasKit looks for `__dirname`, which ES modules lack
+                                    return id === 'astro-og-canvas' ? { id: ogCanvas, external: true } : undefined
+                                },
+                                load: (id) =>
+                                    id === resolved
+                                        ? `export const logo = ${JSON.stringify(fileURLToPath(logoFile))}\nexport const siteTitle = ${JSON.stringify(siteTitle)}`
+                                        : undefined,
+                            },
+                        ],
+                    },
+                })
+                injectRoute({ pattern: '/og/[...route]', entrypoint: new URL('./og-image.ts', import.meta.url) })
+            },
+            'astro:config:done': ({ config }) => {
+                site = config.site
+            },
+            'astro:build:done': async ({ dir }) => {
+                const robots = new URL('./robots.txt', dir)
+                const exists = await access(robots).then(
+                    () => true,
+                    () => false
+                )
+                if (!exists && site) {
+                    await writeFile(
+                        robots,
+                        `User-agent: *\nAllow: /\n\nSitemap: ${new URL('/sitemap-index.xml', site)}\n`
+                    )
+                }
+            },
+        },
+    }
+}
+
 export interface SilarhiThemeOptions {
     /** GitHub `owner/name`, used for the social link and "Edit page". */
     repo?: string
@@ -53,8 +117,10 @@ export function silarhiTheme({ repo, branch = 'main', umami }: SilarhiThemeOptio
     return {
         name: '@silarhi/docs-kit',
         hooks: {
-            async 'config:setup'({ config, astroConfig, updateConfig, addIntegration }) {
+            async 'config:setup'({ config, astroConfig, updateConfig, addIntegration, addRouteMiddleware }) {
                 addIntegration(favicon())
+                addIntegration(seo(typeof config.title === 'string' ? config.title : Object.values(config.title)[0]))
+                addRouteMiddleware({ entrypoint: '@silarhi/docs-kit/route-middleware' })
 
                 // `data-domains` keeps `astro dev` and `astro preview` out of the stats: the tracker only runs on the site host
                 const tracking = umami
