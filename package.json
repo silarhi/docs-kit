@@ -6,7 +6,8 @@
         "dev": "pnpm --filter site dev",
         "build": "pnpm --filter site build",
         "lint": "biome check --write .",
-        "lint:ci": "biome ci ."
+        "lint:ci": "biome ci .",
+        "social": "node scripts/github-social.mjs"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.5.15"
