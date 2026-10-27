@@ -10,7 +10,8 @@ const FONTS = [
     'https://api.fontsource.org/v1/fonts/montserrat/latin-400-normal.ttf',
 ]
 
-const entries = await getCollection('docs')
+// The collection ids the home `index`: Starlight's route data, which the route middleware reads, calls it ''
+const entries = (await getCollection('docs')).map((entry) => ({ ...entry, id: entry.id === 'index' ? '' : entry.id }))
 
 export const { getStaticPaths, GET } = await OGImageRoute({
     // Keys are the image paths without `/og/` and `.png`, as the route middleware builds them
