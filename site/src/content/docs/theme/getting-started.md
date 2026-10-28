@@ -68,8 +68,9 @@ default branch is another one (`branch: '6.x'`), and `repo` for one outside the 
 
 On top of Starlight's tags, every page gets:
 
-- a social image at `/og/<page>.png` (1200×630, built with [astro-og-canvas](https://github.com/delucis/astro-og-canvas)):
-  the page title and description on the SILARHI colors, referenced by `og:image`;
+- a social image at `/og/<page>.png` (1200×630, drawn with [satori](https://github.com/vercel/satori) and resvg),
+  in the layout of sainthillier.fr's: the page title and description, the site's link, and a card with the package
+  and its `composer require`, referenced by `og:image`;
 - JSON-LD: `WebSite` and `SoftwareSourceCode` on the home page, `TechArticle` and `BreadcrumbList` on the others,
   all published by the SILARHI organization of silarhi.fr;
 - on the home page, the title `<name> – <headline>` (the `headline` of the package in `packages.js`) instead of the

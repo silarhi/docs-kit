@@ -1,7 +1,6 @@
 // Shipped as TypeScript on purpose: Vite never externalizes a .ts entry, so it bundles this preset and its
 // TypeScript-only dependencies (starlight-llms-txt) when loading astro.config.mjs, instead of handing them to Node
 import { access, copyFile, readFile, writeFile } from 'node:fs/promises'
-import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import starlight from '@astrojs/starlight'
 import type { StarlightPlugin, StarlightUserConfig } from '@astrojs/starlight/types'
@@ -19,8 +18,11 @@ const faviconFile = new URL('./assets/favicon.png', import.meta.url)
 const trackSearchFile = new URL('./scripts/track-search.js', import.meta.url)
 const logoFile = new URL('./assets/logo.png', import.meta.url)
 const OG_MODULE = 'virtual:silarhi-docs-kit/og'
-// Resolved from this package: a site does not depend on it, so with pnpm it cannot find it from its own build
-const ogCanvas = createRequire(import.meta.url).resolve('astro-og-canvas')
+// Resolved from this package (`import` condition, the ES module of satori): a site does not depend on them, so with
+// pnpm it cannot find them from its own build
+const ogDependencies: Record<string, string> = Object.fromEntries(
+    ['satori', '@resvg/resvg-js'].map((name) => [name, fileURLToPath(import.meta.resolve(name))])
+)
 
 /**
  * Serves the SILARHI favicon at a public path: Starlight's `favicon` option only accepts files of `public/`,
@@ -66,8 +68,8 @@ const seo = (siteTitle: string): AstroIntegration => {
                                     if (id === OG_MODULE) {
                                         return resolved
                                     }
-                                    // Kept out of the bundle: bundled, CanvasKit looks for `__dirname`, which ES modules lack
-                                    return id === 'astro-og-canvas' ? { id: ogCanvas, external: true } : undefined
+                                    // Kept out of the bundle: resvg is a native module, which Vite cannot bundle
+                                    return id in ogDependencies ? { id: ogDependencies[id], external: true } : undefined
                                 },
                                 load: (id) =>
                                     id === resolved
