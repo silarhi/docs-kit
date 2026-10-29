@@ -47,8 +47,9 @@ export const packages = [
     {
         slug: 'cap-bundle',
         name: 'Cap Bundle',
-        headline: 'Cap CAPTCHA for Symfony forms',
-        description: 'Cap, the self-hosted proof-of-work CAPTCHA, in your Symfony forms.',
+        headline: 'trycap.dev CAPTCHA for Symfony forms',
+        description:
+            'Cap CAPTCHA (trycap.dev), the self-hosted proof-of-work reCAPTCHA alternative, in your Symfony forms.',
         composer: 'silarhi/cap-bundle',
         published: true,
         umami: '6a2d5575-d74b-414e-b960-e3829d8a499c',
