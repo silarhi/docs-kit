@@ -4,4 +4,4 @@ packages:
 
 overrides:
     # @shuding/opentype.js (satori) pins fflate 0.7.3: GHSA-55wc-3pg8-jfw6, fixed in 0.7.5
-    'fflate@0.7.3': 0.7.5
+    'fflate@0.7.3': 0.8.3
