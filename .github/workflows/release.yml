@@ -1,31 +1,51 @@
 name: 'Release'
 
 # Publishes @silarhi/docs-kit on a v* tag, through npm trusted publishing (OIDC, no token):
-# npmjs.com → package settings → Trusted publishing → GitHub Actions, silarhi/docs-kit, release.yml
+# npmjs.com → package settings → Trusted publishing → GitHub Actions, silarhi/docs-kit, release.yml, environment release
+#
+# The package ships its sources as they are: this job installs nothing and runs no third-party code
+# besides the pinned actions, so the id-token stays in one job.
 on:
     push:
         tags: ['v*']
 
-permissions:
-    contents: read
+permissions: {}
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref_name }}
+    cancel-in-progress: false
 
 jobs:
     publish:
         name: Publish to npm
         runs-on: ubuntu-latest
         timeout-minutes: 10
+        # Only accepts `v*` tags: a branch can't get an id-token npm would accept.
+        environment: release
         permissions:
-            contents: read
-            id-token: write
+            contents: read # checkout
+            id-token: write # npm trusted publishing + provenance
         steps:
             - name: Checkout
-              uses: actions/checkout@v7
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
+                  fetch-depth: 0
+
+            - name: Verify the tag is on main
+              run: |
+                  git fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+                  if ! git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main; then
+                      echo "::error::Tag ${GITHUB_REF_NAME} (${GITHUB_SHA}) is not on main. Refusing to publish."
+                      exit 1
+                  fi
 
             - name: Setup Node
-              uses: actions/setup-node@v7
+              uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
               with:
                   node-version: lts/*
                   registry-url: 'https://registry.npmjs.org'
+                  package-manager-cache: false
 
             - name: Check the tag matches the package version
               working-directory: packages/docs-kit
