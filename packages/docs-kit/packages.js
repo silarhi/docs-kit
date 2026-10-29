@@ -45,6 +45,16 @@ export const packages = [
         umami: 'cb89a9c9-04b5-48a3-801c-0b22fd3c2347',
     },
     {
+        slug: 'cap-bundle',
+        name: 'Cap Bundle',
+        headline: 'trycap.dev CAPTCHA for Symfony forms',
+        description:
+            'Cap CAPTCHA (trycap.dev), the self-hosted proof-of-work reCAPTCHA alternative, in your Symfony forms.',
+        composer: 'silarhi/cap-bundle',
+        published: true,
+        umami: '6a2d5575-d74b-414e-b960-e3829d8a499c',
+    },
+    {
         slug: 'ux-icons-js-bundle',
         name: 'UX Icons JS Bundle',
         headline: 'Symfony UX Icons in React, Vue and JavaScript',
