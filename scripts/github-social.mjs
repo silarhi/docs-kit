@@ -64,6 +64,12 @@ const repositories = [
         install: 'pnpm add @silarhi/app-js',
     },
     {
+        repo: 'app-js-bundle',
+        name: 'App JS Bundle',
+        lead: 'load_page(), PHP enums as TypeScript and typed form shapes for @silarhi/app-js.',
+        install: 'composer require \\\n  silarhi/app-js-bundle',
+    },
+    {
         repo: 'docker-php',
         name: 'PHP Docker Images',
         lead: 'Apache, FrankenPHP and CI/Alpine images for PHP apps, with Symfony variants. On Docker Hub and GHCR.',
