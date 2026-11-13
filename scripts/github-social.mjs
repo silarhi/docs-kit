@@ -70,6 +70,12 @@ const repositories = [
         install: 'composer require \\\n  silarhi/app-js-bundle',
     },
     {
+        repo: 'voter-bundle',
+        name: 'Voter Bundle',
+        lead: 'Symfony voters from #[Grants] methods: typed subjects, rules compiled with the container.',
+        install: 'composer require \\\n  silarhi/voter-bundle',
+    },
+    {
         repo: 'docker-php',
         name: 'PHP Docker Images',
         lead: 'Apache, FrankenPHP and CI/Alpine images for PHP apps, with Symfony variants. On Docker Hub and GHCR.',
