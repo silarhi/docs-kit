@@ -55,6 +55,13 @@ export const packages = [
         umami: '6a2d5575-d74b-414e-b960-e3829d8a499c',
     },
     {
+        slug: 'voter-bundle',
+        name: 'Voter Bundle',
+        description: 'Declare Symfony voter rules with a #[Grants] attribute on the method that decides them.',
+        composer: 'silarhi/voter-bundle',
+        published: false,
+    },
+    {
         slug: 'ux-icons-js-bundle',
         name: 'UX Icons JS Bundle',
         headline: 'Symfony UX Icons in React, Vue and JavaScript',
